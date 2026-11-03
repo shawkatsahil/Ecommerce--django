@@ -26,7 +26,12 @@
 
     {% if product.stock > 0 %}
       <p class="text-success fw-bold">In stock ({{ product.stock }} left)</p>
-      <button class="btn btn-success btn-lg" disabled>Add to Cart (coming in Step 6)</button>
+      <form action="{% url 'cart:cart_add' product.id %}" method="post" class="d-flex gap-2">
+  {% csrf_token %}
+  <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}"
+         class="form-control" style="width: 90px;">
+  <button type="submit" class="btn btn-success btn-lg">Add to Cart</button>
+</form>
     {% else %}
       <p class="text-danger fw-bold">Out of stock</p>
     {% endif %}
