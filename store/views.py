@@ -6,6 +6,21 @@ def product_list(request, category_slug=None):
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
     category = None
+    q = request.GET.get("q", "").strip()
+
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category=category)
+
+    if q:
+        products = products.filter(name__icontains=q)
+
+    return render(request, "store/product_list.html", {
+        "categories": categories,
+        "products": products,
+        "category": category,
+        "q": q,
+    })
 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)

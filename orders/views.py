@@ -70,5 +70,9 @@ def payment_start(request, order_id):
         messages.error(request, "Card declined. Use the test card 4242 4242 4242 4242.")
 
     return render(request, "orders/payment.html", {"order": order})
+@login_required
+def order_list(request):
+    orders = Order.objects.filter(user=request.user).prefetch_related("items")
+    return render(request, "orders/order_list.html", {"orders": orders})
 
 # Create your views here.

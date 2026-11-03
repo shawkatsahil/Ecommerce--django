@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders | TechShop{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">My Orders</h2>
+
+{% if orders %}
+<div class="table-responsive">
+  <table class="table align-middle">
+    <thead>
+      <tr><th>Order</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.created_at|date:"d M Y, H:i" }}</td>
+        <td>{{ order.items.count }}</td>
+        <td>${{ order.get_total_cost }}</td>
+        <td>
+          <span class="badge {% if order.status == 'paid' %}bg-success{% elif order.status == 'cancelled' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+            {{ order.get_status_display }}
+          </span>
+        </td>
+        <td><a href="{% url 'orders:order_detail' order.id %}" class="btn btn-sm btn-outline-dark">View</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+  <p>You have no orders yet.</p>
+  <a href="{% url 'store:product_list' %}" class="btn btn-dark">Start shopping</a>
+{% endif %}
+{% endblock %}
