@@ -3,7 +3,11 @@
 {% block title %}Order {{ order.id }} | TechShop{% endblock %}
 
 {% block content %}
-<div class="alert alert-success">Thank you! Your order <strong>#{{ order.id }}</strong> was created.</div>
+{% if order.status == "pending" %}
+  <div class="alert alert-info">
+    Your order <strong>#{{ order.id }}</strong> is created. Please complete the payment.
+  </div>
+{% endif %}
 
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2 class="mb-0">Order #{{ order.id }}</h2>
@@ -49,7 +53,7 @@
 </div>
 
 {% if order.status == "pending" %}
-  <button class="btn btn-primary btn-lg" disabled>Pay now (coming in Step 9)</button>
+  <a href="{% url 'orders:payment_start' order.id %}" class="btn btn-primary btn-lg">Pay now</a>
 {% endif %}
 <a href="{% url 'store:product_list' %}" class="btn btn-outline-dark btn-lg">Continue shopping</a>
 {% endblock %}

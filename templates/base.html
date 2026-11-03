@@ -9,6 +9,13 @@
 <body>
      <nav class="navbar navbar-dark bg-dark mb-4">
     <div class="container">
+          {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
       <a class="navbar-brand fw-bold" href="{% url 'store:product_list' %}">🛒 TechShop</a>
       <div class="d-flex align-items-center gap-2">
         {% if user.is_authenticated %}
