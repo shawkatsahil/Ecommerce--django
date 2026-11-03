@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | TechShop{% endblock %}
+
+{% block content %}
+<a href="{% url 'store:product_list' %}" class="text-decoration-none">&larr; Back to shop</a>
+
+<div class="row mt-3">
+  <div class="col-md-6 mb-4">
+    {% if product.image %}
+      <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
+    {% else %}
+      <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted"
+           style="height: 350px;">No image</div>
+    {% endif %}
+  </div>
+
+  <div class="col-md-6">
+    <h2>{{ product.name }}</h2>
+    <p class="text-muted">
+      Category:
+      <a href="{% url 'store:product_list_by_category' product.category.slug %}">{{ product.category.name }}</a>
+    </p>
+    <h3 class="mb-3">${{ product.price }}</h3>
+    <p>{{ product.description|default:"No description yet." }}</p>
+
+    {% if product.stock > 0 %}
+      <p class="text-success fw-bold">In stock ({{ product.stock }} left)</p>
+      <button class="btn btn-success btn-lg" disabled>Add to Cart (coming in Step 6)</button>
+    {% else %}
+      <p class="text-danger fw-bold">Out of stock</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
