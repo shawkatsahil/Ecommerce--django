@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Order {{ order.id }} | TechShop{% endblock %}
+
+{% block content %}
+<div class="alert alert-success">Thank you! Your order <strong>#{{ order.id }}</strong> was created.</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Order #{{ order.id }}</h2>
+  <span class="badge {% if order.status == 'paid' %}bg-success{% elif order.status == 'cancelled' %}bg-danger{% else %}bg-warning text-dark{% endif %} fs-6">
+    {{ order.get_status_display }}
+  </span>
+</div>
+
+<div class="table-responsive">
+  <table class="table align-middle">
+    <thead>
+      <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Total</th></tr>
+    </thead>
+    <tbody>
+      {% for item in order.items.all %}
+      <tr>
+        <td>{{ item.product.name }}</td>
+        <td>${{ item.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.get_cost }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="3" class="text-end">Total</th>
+        <th>${{ order.get_total_cost }}</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <h5>Shipping to</h5>
+    <p class="mb-0">
+      {{ order.full_name }}<br>
+      {{ order.address }}<br>
+      {{ order.city }}, {{ order.postal_code }}<br>
+      {{ order.email }}
+    </p>
+  </div>
+</div>
+
+{% if order.status == "pending" %}
+  <button class="btn btn-primary btn-lg" disabled>Pay now (coming in Step 9)</button>
+{% endif %}
+<a href="{% url 'store:product_list' %}" class="btn btn-outline-dark btn-lg">Continue shopping</a>
+{% endblock %}
