@@ -36,7 +36,7 @@ Payments are simulated. Use the test card `4242 4242 4242 4242` with any expiry 
 Other card numbers are declined. Never enter a real card.
 
 ## Screenshots
-![Add to cart](screenshots/add-to-cart.png)
+![Add to cart](screenshots/add_cart.png)
 ![Cart](screenshots/cart.png)
 ![Order](screenshots/order.png)
 
